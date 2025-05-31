@@ -17,7 +17,7 @@ This proxy bridges that gap by:
 
 ```bash
 # Pull and run from GitHub Container Registry
-docker run -d -p 8080:8080 ghcr.io/KrypticIO/go-playground-proxy:latest
+docker run -d -p 8080:8080 ghcr.io/krypticio/go-playground-proxy:latest
 ```
 
 ### Using Docker Compose
@@ -25,7 +25,7 @@ docker run -d -p 8080:8080 ghcr.io/KrypticIO/go-playground-proxy:latest
 ```yaml
 services:
   go-playground-proxy:
-    image: ghcr.io/KrypticIO/go-playground-proxy:latest
+    image: ghcr.io/krypticio/go-playground-proxy:latest
     ports:
       - "8080:8080"
     restart: unless-stopped
@@ -47,7 +47,7 @@ helm install goplay-proxy ./helm/goplay-proxy
 
 # Install with custom values
 helm install goplay-proxy ./helm/goplay-proxy \
-  --set image.repository=ghcr.io/KrypticIO/go-playground-proxy \
+  --set image.repository=ghcr.io/krypticio/go-playground-proxy \
   --set image.tag=latest \
   --set app.port=8080 \
   --set app.logLevel=info
@@ -133,7 +133,7 @@ docker build -t go-playground-proxy .
 ### 1. Cloud Run (Google Cloud)
 ```bash
 gcloud run deploy go-playground-proxy \
-  --image ghcr.io/KrypticIO/go-playground-proxy:latest \
+  --image ghcr.io/krypticio/go-playground-proxy:latest \
   --platform managed \
   --region us-central1 \
   --allow-unauthenticated
@@ -186,7 +186,7 @@ app:
 
 # Image configuration
 image:
-  repository: ghcr.io/KrypticIO/go-playground-proxy
+  repository: ghcr.io/krypticio/go-playground-proxy
   tag: "latest"
   pullPolicy: IfNotPresent
 
