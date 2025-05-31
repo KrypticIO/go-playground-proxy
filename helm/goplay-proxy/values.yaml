@@ -1,9 +1,9 @@
 replicaCount: 1
 
 image:
-  repository: goplay-proxy
+  repository: ghcr.io/bfirestone/go-playground-proxy
   pullPolicy: IfNotPresent
-  tag: ""
+  tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""

@@ -17,7 +17,7 @@ This proxy bridges that gap by:
 
 ```bash
 # Pull and run from GitHub Container Registry
-docker run -d -p 8080:8080 ghcr.io/yourusername/go-playground-proxy:latest
+docker run -d -p 8080:8080 ghcr.io/bfirestone/go-playground-proxy:latest
 ```
 
 ### Using Docker Compose
@@ -25,7 +25,7 @@ docker run -d -p 8080:8080 ghcr.io/yourusername/go-playground-proxy:latest
 ```yaml
 services:
   go-playground-proxy:
-    image: ghcr.io/yourusername/go-playground-proxy:latest
+    image: ghcr.io/bfirestone/go-playground-proxy:latest
     ports:
       - "8080:8080"
     restart: unless-stopped
@@ -34,9 +34,28 @@ services:
 ### Building from Source
 
 ```bash
-git clone https://github.com/yourusername/go-playground-proxy.git
+git clone https://github.com/bfirestone/go-playground-proxy.git
 cd go-playground-proxy
 go run main.go
+```
+
+### Using Helm (Kubernetes)
+
+```bash
+# Install directly from the repository
+helm install goplay-proxy ./helm/goplay-proxy
+
+# Install with custom values
+helm install goplay-proxy ./helm/goplay-proxy \
+  --set image.repository=ghcr.io/bfirestone/go-playground-proxy \
+  --set image.tag=latest \
+  --set app.port=8080 \
+  --set app.logLevel=info
+
+# Install with ingress enabled
+helm install goplay-proxy ./helm/goplay-proxy \
+  --set ingress.enabled=true \
+  --set ingress.hosts[0].host=goplay.example.com
 ```
 
 ## Zulip Configuration
@@ -75,7 +94,10 @@ Clicking the button opens the code in the official Go Playground.
 - ✅ Health check endpoint for monitoring
 - ✅ Lightweight Docker image (~10MB)
 - ✅ Multi-architecture support (amd64, arm64)
-- ✅ Comprehensive logging
+- ✅ Comprehensive structured logging with Zap
+- ✅ Echo web framework for high performance
+- ✅ Viper configuration management
+- ✅ Kubernetes ready with Helm chart
 
 ## Development
 
@@ -111,7 +133,7 @@ docker build -t go-playground-proxy .
 ### 1. Cloud Run (Google Cloud)
 ```bash
 gcloud run deploy go-playground-proxy \
-  --image ghcr.io/yourusername/go-playground-proxy:latest \
+  --image ghcr.io/bfirestone/go-playground-proxy:latest \
   --platform managed \
   --region us-central1 \
   --allow-unauthenticated
@@ -129,14 +151,69 @@ railway up
 fly deploy
 ```
 
-### 4. Self-hosted
+### 4. Kubernetes (Helm)
+```bash
+# Add custom Helm repository (if published)
+helm repo add goplay-proxy https://bfirestone.github.io/go-playground-proxy
+helm repo update
+
+# Install from repository
+helm install goplay-proxy goplay-proxy/goplay-proxy
+
+# Or install from local chart
+helm install goplay-proxy ./helm/goplay-proxy
+```
+
+### 5. Self-hosted
 Use the provided `docker-compose.yaml` or deploy directly with Docker.
 
 ## Configuration
 
 Environment variables:
 
-- `PORT` - Server port (default: 8080)
+- `GOPLAY_PORT` - Server port (default: 8080)
+- `GOPLAY_LOG_LEVEL` - Log level: debug, info, warn, error (default: info)
+
+### Helm Values
+
+Key configuration options for Helm deployment:
+
+```yaml
+# Application settings
+app:
+  port: "8080"
+  logLevel: "info"
+
+# Image configuration
+image:
+  repository: ghcr.io/bfirestone/go-playground-proxy
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 80
+
+# Ingress configuration
+ingress:
+  enabled: false
+  className: ""
+  hosts:
+    - host: goplay.example.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
+# Resource limits
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+```
 
 ## Contributing
 
