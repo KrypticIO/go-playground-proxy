@@ -1,6 +1,6 @@
 services:
   go-playground-proxy:
-    image: ghcr.io/KrypticIO/go-playground-proxy:latest
+    image: ghcr.io/krypticio/go-playground-proxy:latest
     ports:
       - "8080:8080"
     restart: unless-stopped
