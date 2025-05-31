@@ -17,7 +17,7 @@ This proxy bridges that gap by:
 
 ```bash
 # Pull and run from GitHub Container Registry
-docker run -d -p 8080:8080 ghcr.io/bfirestone/go-playground-proxy:latest
+docker run -d -p 8080:8080 ghcr.io/KrypticIO/go-playground-proxy:latest
 ```
 
 ### Using Docker Compose
@@ -25,7 +25,7 @@ docker run -d -p 8080:8080 ghcr.io/bfirestone/go-playground-proxy:latest
 ```yaml
 services:
   go-playground-proxy:
-    image: ghcr.io/bfirestone/go-playground-proxy:latest
+    image: ghcr.io/KrypticIO/go-playground-proxy:latest
     ports:
       - "8080:8080"
     restart: unless-stopped
@@ -34,7 +34,7 @@ services:
 ### Building from Source
 
 ```bash
-git clone https://github.com/bfirestone/go-playground-proxy.git
+git clone https://github.com/KrypticIO/go-playground-proxy.git
 cd go-playground-proxy
 go run main.go
 ```
@@ -47,7 +47,7 @@ helm install goplay-proxy ./helm/goplay-proxy
 
 # Install with custom values
 helm install goplay-proxy ./helm/goplay-proxy \
-  --set image.repository=ghcr.io/bfirestone/go-playground-proxy \
+  --set image.repository=ghcr.io/KrypticIO/go-playground-proxy \
   --set image.tag=latest \
   --set app.port=8080 \
   --set app.logLevel=info
@@ -133,7 +133,7 @@ docker build -t go-playground-proxy .
 ### 1. Cloud Run (Google Cloud)
 ```bash
 gcloud run deploy go-playground-proxy \
-  --image ghcr.io/bfirestone/go-playground-proxy:latest \
+  --image ghcr.io/KrypticIO/go-playground-proxy:latest \
   --platform managed \
   --region us-central1 \
   --allow-unauthenticated
@@ -154,7 +154,7 @@ fly deploy
 ### 4. Kubernetes (Helm)
 ```bash
 # Add custom Helm repository (if published)
-helm repo add goplay-proxy https://bfirestone.github.io/go-playground-proxy
+helm repo add goplay-proxy https://KrypticIO.github.io/go-playground-proxy
 helm repo update
 
 # Install from repository
@@ -186,7 +186,7 @@ app:
 
 # Image configuration
 image:
-  repository: ghcr.io/bfirestone/go-playground-proxy
+  repository: ghcr.io/KrypticIO/go-playground-proxy
   tag: "latest"
   pullPolicy: IfNotPresent
 

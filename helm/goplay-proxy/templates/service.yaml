@@ -4,6 +4,12 @@ metadata:
   name: {{ include "goplay-proxy.fullname" . }}
   labels:
     {{- include "goplay-proxy.labels" . | nindent 4 }}
+  {{- if and (eq .Values.service.type "LoadBalancer") .Values.service.loadBalancer.enabled }}
+  {{- with .Values.service.loadBalancer.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- end }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -13,3 +19,9 @@ spec:
       name: http
   selector:
     {{- include "goplay-proxy.selectorLabels" . | nindent 4 }}
+  {{- if and (eq .Values.service.type "LoadBalancer") .Values.service.loadBalancer.enabled }}
+  {{- with .Values.service.loadBalancer.loadBalancerSourceRanges }}
+  loadBalancerSourceRanges:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- end }}
