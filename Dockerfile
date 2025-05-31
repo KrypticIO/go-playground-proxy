@@ -22,10 +22,21 @@ FROM alpine:latest
 # Install ca-certificates for HTTPS requests
 RUN apk --no-cache add ca-certificates
 
-WORKDIR /root/
+# Create a non-root user and group
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+# Create app directory
+WORKDIR /app
 
 # Copy the binary from builder stage
 COPY --from=builder /app/proxy .
+
+# Set proper permissions
+RUN chmod +x /app/proxy && \
+    chown -R appuser:appgroup /app
+
+# Use non-root user
+USER appuser
 
 # Expose port 8080
 EXPOSE 8080
